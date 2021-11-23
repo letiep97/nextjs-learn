@@ -18,7 +18,6 @@ export function MainLayout({ children }: LayoutProps) {
 
       <Box component="main" flexGrow={1}>
         <Container maxWidth="lg" sx={{ bgcolor: 'pink' }}>
-          <h1>Main layout</h1>
           {children}
         </Container>
       </Box>
