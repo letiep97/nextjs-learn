@@ -10,7 +10,7 @@ const Home: NextPageWithLayout = () => {
   const router = useRouter();
 
   const handlerToLearn = () => {
-    router.push('/portfolio');
+    router.push('/profile');
   };
 
   return (

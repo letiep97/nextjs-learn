@@ -1,7 +1,8 @@
+import { Box } from '@mui/system';
 import * as React from 'react';
 
 export interface IHeaderProps {}
 
-export default function Header(props: IHeaderProps) {
-  return <>Header</>;
+export function Header(props: IHeaderProps) {
+  return <Box component="header">Header</Box>;
 }
