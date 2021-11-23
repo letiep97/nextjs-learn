@@ -5,10 +5,24 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ROUTE_LIST } from 'router';
 import logo from '@/src/images/logo.svg';
+import { useWeb3React } from '@web3-react/core';
+import { injected } from 'connectors';
 
 export interface IHeaderDesktopProps {}
 
 export default function HeaderDesktop(props: IHeaderDesktopProps) {
+  const web3ReactContext = useWeb3React();
+  const {
+    connector,
+    library,
+    chainId,
+    account,
+    activate,
+    deactivate,
+    active,
+    error,
+  } = web3ReactContext;
+
   return (
     <Box component="header" display={{ xs: 'none', md: 'block' }}>
       <Container>
@@ -30,10 +44,20 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
             })}
           </Box>
           <Box>
-            <Button variant="text">Login</Button>
-            <Button variant="contained" color="success">
-              Connect
-            </Button>
+            {active ? (
+              <>{account}</>
+            ) : (
+              <>
+                <Button variant="text">Login</Button>
+                <Button
+                  variant="contained"
+                  color="success"
+                  onClick={() => activate(injected)}
+                >
+                  Connect
+                </Button>
+              </>
+            )}
           </Box>
         </Stack>
       </Container>

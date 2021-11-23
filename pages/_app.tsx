@@ -5,9 +5,19 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { theme, createEmotionCache } from '@/utils';
+import { Web3ReactProvider } from '@web3-react/core';
+import { Web3Provider } from '@ethersproject/providers';
+import Web3ReactManager from '@/components/Web3ReactManager';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
+
+// Web3
+function getLibrary(provider: any): Web3Provider {
+  const library = new Web3Provider(provider);
+  library.pollingInterval = 12000;
+  return library;
+}
 
 function MyApp({
   Component,
@@ -19,12 +29,16 @@ function MyApp({
 
   return (
     <CacheProvider value={clientSideEmotionCache}>
-      <ThemeProvider theme={theme}>
-        <CssBaseline />
-        <Layout>
-          <Component {...pageProps} />
-        </Layout>
-      </ThemeProvider>
+      <Web3ReactProvider getLibrary={getLibrary}>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <Web3ReactManager>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Web3ReactManager>
+        </ThemeProvider>
+      </Web3ReactProvider>
     </CacheProvider>
   );
 }
