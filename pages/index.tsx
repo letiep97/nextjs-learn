@@ -1,9 +1,18 @@
 import type { NextPage } from 'next';
+import Link from 'next/link';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
+import { useRouter } from 'next/dist/client/router';
+import { NextPageWithLayout } from '@/models';
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
+  const router = useRouter();
+
+  const handlerToLearn = () => {
+    router.push('/portfolio');
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -23,15 +32,17 @@ const Home: NextPage = () => {
         </p>
 
         <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h2>Documentation &rarr;</h2>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
+          <Link href="/portfolio">
+            <a className={styles.card}>
+              <h2>Portfolio </h2>
+              <p>Portfolio for user.</p>
+            </a>
+          </Link>
 
-          <a href="https://nextjs.org/learn" className={styles.card}>
+          <div onClick={handlerToLearn} className={styles.card}>
             <h2>Learn &rarr;</h2>
             <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
+          </div>
 
           <a
             href="https://github.com/vercel/next.js/tree/master/examples"
