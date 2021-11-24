@@ -8,6 +8,9 @@ import { theme, createEmotionCache } from '@/utils';
 import { Web3ReactProvider } from '@web3-react/core';
 import { Web3Provider } from '@ethersproject/providers';
 import Web3ReactManager from '@/components/Web3ReactManager';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
+import store, { persistor } from '../app/store';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -31,12 +34,16 @@ function MyApp({
     <CacheProvider value={clientSideEmotionCache}>
       <Web3ReactProvider getLibrary={getLibrary}>
         <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <Web3ReactManager>
-            <Layout>
-              <Component {...pageProps} />
-            </Layout>
-          </Web3ReactManager>
+          <Provider store={store}>
+            <PersistGate loading={null} persistor={persistor}>
+              <CssBaseline />
+              <Web3ReactManager>
+                <Layout>
+                  <Component {...pageProps} />
+                </Layout>
+              </Web3ReactManager>
+            </PersistGate>
+          </Provider>
         </ThemeProvider>
       </Web3ReactProvider>
     </CacheProvider>

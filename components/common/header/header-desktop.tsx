@@ -30,7 +30,8 @@ import { injected } from 'connectors';
 import { shortenAddress } from '@/components/functions/format';
 import { useRouter } from 'next/dist/client/router';
 import Logo from '../../../src/images/logo.svg';
-import { InjectedConnector } from '@web3-react/injected-connector';
+import { useDispatch, useSelector } from 'react-redux';
+import { connectWallet, disconnectWallet } from 'app/authSlice';
 
 export interface IHeaderDesktopProps {}
 
@@ -50,6 +51,9 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
   const [tab, setTab] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
+  const dispatch = useDispatch();
+  const isConnect = useSelector((state: any) => state.auth.isConnect);
+
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
   };
@@ -111,7 +115,7 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
                 </Box>
                 {/* Login/Setting */}
                 <Box>
-                  {active ? (
+                  {isConnect ? (
                     <>
                       <Tooltip title="Account settings">
                         <IconButton
@@ -171,7 +175,12 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
                           Deposit
                         </MenuItem>
                         <Divider />
-                        <MenuItem onClick={() => deactivate()}>
+                        <MenuItem
+                          onClick={() => {
+                            dispatch(disconnectWallet());
+                            deactivate();
+                          }}
+                        >
                           <ListItemIcon>
                             <Logout fontSize="small" />
                           </ListItemIcon>
@@ -184,7 +193,10 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
                       <Button
                         variant="contained"
                         color="success"
-                        onClick={() => activate(injected)}
+                        onClick={() => {
+                          activate(injected);
+                          dispatch(connectWallet());
+                        }}
                       >
                         Connect
                       </Button>
