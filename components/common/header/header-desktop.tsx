@@ -30,8 +30,8 @@ import { injected } from 'connectors';
 import { shortenAddress } from '@/components/functions/format';
 import { useRouter } from 'next/dist/client/router';
 import Logo from '../../../src/images/logo.svg';
-import { useDispatch, useSelector } from 'react-redux';
 import { connectWallet, disconnectWallet } from 'app/authSlice';
+import { useAppDispatch, useAppSelector } from 'hooks/useAppRedux';
 
 export interface IHeaderDesktopProps {}
 
@@ -51,8 +51,8 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
   const [tab, setTab] = useState();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const dispatch = useDispatch();
-  const isConnect = useSelector((state: any) => state.auth.isConnect);
+  const dispatch = useAppDispatch();
+  const isConnect = useAppSelector((state) => state.auth.isConnect);
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
