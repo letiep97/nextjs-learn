@@ -3,6 +3,7 @@ import { Container, Stack } from '@mui/material';
 import { Box } from '@mui/system';
 import { useEffect } from 'react';
 import { Footer, Header } from '../common';
+import { Theme } from '@mui/material/styles';
 
 export function MainLayout({ children }: LayoutProps) {
   useEffect(() => {
@@ -16,8 +17,14 @@ export function MainLayout({ children }: LayoutProps) {
     <Stack minHeight="100vh">
       <Header />
 
-      <Box component="main" flexGrow={1}>
-        <Container maxWidth="lg" sx={{ bgcolor: 'pink' }}>
+      <Box
+        component="main"
+        flexGrow={1}
+        sx={{
+          bgcolor: (theme: any) => theme.color.bgcolor,
+        }}
+      >
+        <Container maxWidth="lg" sx={{ bgcolor: 'pink', padding: 1 }}>
           {children}
         </Container>
       </Box>

@@ -11,4 +11,4 @@ export default function Profile(props: IProfileProps) {
   );
 }
 
-Profile.Layout = EmptyLayout;
+// Profile.Layout = EmptyLayout;

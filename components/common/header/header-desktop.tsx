@@ -1,9 +1,12 @@
 import {
   AppBar,
+  Avatar,
   Button,
   Container,
   IconButton,
   Link as MuiLink,
+  ListItemIcon,
+  MenuItem,
   Slide,
   Stack,
   Tab,
@@ -11,19 +14,23 @@ import {
   Toolbar,
   Typography,
   useScrollTrigger,
+  Divider,
+  Menu,
+  Tooltip,
 } from '@mui/material';
+import { Settings, Logout, PersonAdd } from '@mui/icons-material';
 import * as PropTypes from 'prop-types';
 import { Box } from '@mui/system';
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ROUTE_LIST } from 'router';
-import logo from '@/src/images/logo.svg';
 import { useWeb3React } from '@web3-react/core';
 import { injected } from 'connectors';
 import { shortenAddress } from '@/components/functions/format';
 import { useRouter } from 'next/dist/client/router';
-import useStyles from './styles';
+import Logo from '../../../src/images/logo.svg';
+import { InjectedConnector } from '@web3-react/injected-connector';
 
 export interface IHeaderDesktopProps {}
 
@@ -41,7 +48,14 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
   } = web3ReactContext;
   const router = useRouter();
   const [tab, setTab] = useState();
-  const styles = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const handleChangeTab = (e: React.SyntheticEvent, value: any) => {
     setTab(value);
@@ -51,21 +65,28 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
   return (
     <Box component="header" display={{ xs: 'none', md: 'block' }}>
       <HideOnScroll {...props}>
-        <AppBar
-          classes={{
-            root: styles.appBar,
-          }}
-        >
+        <AppBar>
           <Toolbar>
             <Container>
               <Stack
                 direction="row"
                 justifyContent="space-between"
-                alignItems="baseline"
+                alignItems="center"
               >
+                {/* Logo */}
                 <Box>
-                  <Link href={'/'}>Logo</Link>
+                  <Link href={'/'} passHref>
+                    <MuiLink
+                      sx={{
+                        display: 'flex',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <Image src={Logo} alt="logo" width={128} height={30} />
+                    </MuiLink>
+                  </Link>
                 </Box>
+                {/* Nav */}
                 <Box>
                   <Tabs
                     value={tab}
@@ -81,9 +102,6 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
                           //     <MuiLink>{router.label}</MuiLink>
                           //   </Link>
                           // }
-                          classes={{
-                            root: styles.tab,
-                          }}
                           label={router.label}
                           value={router}
                         />
@@ -91,9 +109,76 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
                     })}
                   </Tabs>
                 </Box>
+                {/* Login/Setting */}
                 <Box>
                   {active ? (
-                    <>{shortenAddress(account)}</>
+                    <>
+                      <Tooltip title="Account settings">
+                        <IconButton
+                          onClick={handleClick}
+                          size="small"
+                          sx={{ ml: 2 }}
+                        >
+                          <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                          <Box sx={{ pl: 1 }}>{shortenAddress(account)}</Box>
+                        </IconButton>
+                      </Tooltip>
+
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={open}
+                        onClose={handleClose}
+                        onClick={handleClose}
+                        PaperProps={{
+                          elevation: 0,
+                          sx: {
+                            overflow: 'visible',
+                            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                            mt: 1.5,
+                            '& .MuiAvatar-root': {
+                              width: 32,
+                              height: 32,
+                              ml: -0.5,
+                              mr: 1,
+                            },
+                            '&:before': {
+                              content: '""',
+                              display: 'block',
+                              position: 'absolute',
+                              top: 0,
+                              right: 14,
+                              width: 10,
+                              height: 10,
+                              bgcolor: 'background.paper',
+                              transform: 'translateY(-50%) rotate(45deg)',
+                              zIndex: 0,
+                            },
+                          },
+                        }}
+                        transformOrigin={{
+                          horizontal: 'right',
+                          vertical: 'top',
+                        }}
+                        anchorOrigin={{
+                          horizontal: 'right',
+                          vertical: 'bottom',
+                        }}
+                      >
+                        <MenuItem onClick={() => router.push('./profile')}>
+                          <ListItemIcon>
+                            <Settings fontSize="small" />
+                          </ListItemIcon>
+                          Deposit
+                        </MenuItem>
+                        <Divider />
+                        <MenuItem onClick={() => deactivate()}>
+                          <ListItemIcon>
+                            <Logout fontSize="small" />
+                          </ListItemIcon>
+                          Logout
+                        </MenuItem>
+                      </Menu>
+                    </>
                   ) : (
                     <>
                       <Button

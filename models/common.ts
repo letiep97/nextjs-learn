@@ -1,4 +1,4 @@
-import { EmotionCache } from '@emotion/utils';
+import { EmotionCache } from '@emotion/react';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
 import { ReactElement, ReactNode } from 'react';
