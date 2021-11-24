@@ -21,7 +21,7 @@ export function MainLayout({ children }: LayoutProps) {
         component="main"
         flexGrow={1}
         sx={{
-          bgcolor: (theme: any) => theme.color.bgcolor,
+          bgcolor: (theme: any) => theme.color.bgColor,
         }}
       >
         <Container maxWidth="lg" sx={{ bgcolor: 'pink', padding: 1 }}>
