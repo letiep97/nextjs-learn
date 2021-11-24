@@ -7,5 +7,10 @@ const RPC_URLS: { [chainId: number]: string } = {
 };
 
 export const injected = new InjectedConnector({
-  supportedChainIds: [1, 3, 4, 5, 42],
+  supportedChainIds: [
+    // Ethereum
+    1, 3, 4, 5, 42,
+    // Poly
+    137, 80001,
+  ],
 });
