@@ -40,6 +40,11 @@ export const theme = createTheme({
       defaultProps: {
         fixed: true,
       },
+      styleOverrides: {
+        root: {
+          // padding: '0 !important',
+        },
+      },
     },
 
     MuiButtonBase: {

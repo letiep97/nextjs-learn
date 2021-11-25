@@ -48,7 +48,7 @@ export default function HeaderDesktop(props: IHeaderDesktopProps) {
     error,
   } = web3ReactContext;
   const router = useRouter();
-  const [tab, setTab] = useState();
+  const [tab, setTab] = useState(ROUTE_LIST[0]);
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const dispatch = useAppDispatch();
